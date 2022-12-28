@@ -3,10 +3,15 @@ import styled from "styled-components";
 export const FormsContent = styled.div`
 background: #2c2c2c;
 color: #fff;
-width: 500px;
+max-width: 500px;
 padding: 2rem;
 font: 0.8rem 'Open Sans', serif;
 border-radius: 1rem;
+
+@media (min-width: 400px) {
+    width: 80%;
+    }
+
   h1 {
     font-family: 'Nunito', sans-serif;
     text-align: center;
