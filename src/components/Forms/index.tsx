@@ -1,5 +1,6 @@
 import { useForm, SubmitHandler } from "react-hook-form";
 import { DivForm, FormsContent } from "./style";
+import { Resolver } from "react-hook-form/dist/types";
 
 type FormValues = {
   fullName: string;
@@ -11,8 +12,21 @@ type FormValues = {
   periodoContato: string;
 }
 
+const resolver: Resolver<FormValues> = async (values) => {
+  return {
+    values: values.fullName ? values : {},
+    errors: !values.fullName
+    ? {
+      fullName: {
+        type: 'required',
+        message: 'O campo nome é obrigatório.'
+      },
+    } : {},
+  }
+}
+
 const Forms = (props:any): JSX.Element => {
-  const {register, handleSubmit, formState: { errors }} = useForm<FormValues>();
+  const {register, handleSubmit, formState: { errors }} = useForm<FormValues>({resolver});
   const onSubmit: SubmitHandler<FormValues> = data => console.log(data);
   return(
     <FormsContent>
@@ -30,9 +44,11 @@ const Forms = (props:any): JSX.Element => {
         <input {...register("userEmail")} placeholder="Seu melhor e-mail" />
         </DivForm>
 
+        {errors?.fullName && <p>{errors.fullName.message}</p>}
+
         <DivForm>
         <input type="submit" className="enviar"/>
-        </DivForm>
+        </DivForm>        
       </form>
 
     </FormsContent>
