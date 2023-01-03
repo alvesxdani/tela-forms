@@ -54,7 +54,8 @@ const schema = yup
     periodoContato: yup
       .string()
       .required('O campo "Período p/ contato" é obrigatório.'),
-    userAutorization: yup.boolean().oneOf([true]).default(false).required()
+    userAutorization: yup
+    .bool()
   })
   .required();
 
@@ -144,6 +145,14 @@ const Forms = (props: any): JSX.Element => {
               </option>
             ))}
           </select>
+        </DivForm>
+
+        <DivForm>
+          <label>Autoriza o contato por telefone?</label>
+          <input 
+          {...register("userAutorization")} 
+          type="checkbox"
+          />
         </DivForm>
 
         {/* Erros */}

@@ -40,7 +40,7 @@ export const DivForm = styled.div`
   }
 
   input {
-    flex: 2;
+    flex: 1.7;
     padding: 0.8rem;
     background: #eee2;
     color: #fff;
@@ -58,7 +58,7 @@ export const DivForm = styled.div`
   }
 
   select {
-    flex: 2;
+    flex: 1.7;
     background: #eee2;
     color: #fff;
     padding: 0.8rem;
