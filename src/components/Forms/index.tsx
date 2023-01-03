@@ -47,7 +47,7 @@ const schema = yup
         "E-mail inválido"
       ),
     userTel: yup
-      .string()
+    .string()
       .required("O campo Telefone é obrigatório.")
       .phone("BR", true, "Número de telefone inválido."),
     interBairro: yup
