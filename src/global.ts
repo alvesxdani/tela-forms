@@ -6,10 +6,14 @@ export const GlobalStyle = createGlobalStyle`
     padding: 0;
   }
 
+  body, html {
+    width: 100%;
+    height: 100vh;
+  }
+
   body {
     font: 10px 'Calibri';
     background: #f7f7f7;
     color: #000;
-    text
   }
 `;
