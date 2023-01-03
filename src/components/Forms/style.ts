@@ -73,7 +73,7 @@ export const DivForm = styled.div`
   }
 `
 
-export const MsgError = styled.div`
+export const MsgForms = styled.div`
 display: flex;
 justify-content: left;
 align-items: center;

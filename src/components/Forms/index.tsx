@@ -1,9 +1,12 @@
 import { useForm, SubmitHandler } from "react-hook-form";
-import { DivForm, FormsContent, MsgError } from "./style";
+import { DivForm, FormsContent, MsgForms } from "./style";
 import { AiOutlineWarning } from "react-icons/ai";
+import { BsFillCheckCircleFill } from "react-icons/bs";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import "yup-phone";
+import MaskedInput from 'react-text-mask';
+
 
 {
   /* Dados necessários :
@@ -33,11 +36,11 @@ const schema = yup
       .required("O campo nome é obrigatório.")
       .matches(
         /(?=^.{2,60}$)^[A-ZÀÁÂĖÈÉÊÌÍÒÓÔÕÙÚÛÇ][a-zàáâãèéêìíóôõùúç]+(?:[ ](?:das?|dos?|de|e|[A-Z][a-z]+))*$/,
-        "Nome inválido"
+        "Nome inválido."
       ),
     userEmail: yup
       .string()
-      .email()
+      .email("Formato de e-mail inválido.")
       .required("O campo e-mail é obrigatório.")
       .matches(
         /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
@@ -46,8 +49,7 @@ const schema = yup
     userTel: yup
       .string()
       .required("O campo Telefone é obrigatório.")
-      .phone("BR", true, "Número de telefone inválido.")
-      .max(15),
+      .phone("BR", true, "Número de telefone inválido."),
     interBairro: yup
       .string()
       .required('O campo "Bairro de interesse" é obrigatório.'),
@@ -73,16 +75,18 @@ const periodosPContato = [
   { label: "Noite", value: "Noite" },
 ];
 
+
 const Forms = (props: any): JSX.Element => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitSuccessful },
     setValue,
     reset,
   } = useForm<FormInputs>({
     resolver: yupResolver(schema),
   });
+
 
   const onSubmit = (data: FormInputs) => {
     console.log(JSON.stringify(data, null, 2));
@@ -98,21 +102,34 @@ const Forms = (props: any): JSX.Element => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <DivForm>
           <label>Nome: </label>
-          <input {...register("fullName")} placeholder="Seu nome completo" />
+          <input {...register("fullName")} 
+          onChange={(e) =>
+            setValue("fullName", e.target.value, { shouldValidate: true })
+          }
+          placeholder="Seu nome completo" />
         </DivForm>
 
         <DivForm>
           <label>E-mail: </label>
           <input
             {...register("userEmail")}
+            onChange={(e) =>
+              setValue("userEmail", e.target.value, { shouldValidate: true })
+            }
             placeholder="Seu melhor e-mail"
-            type="email"
           />
         </DivForm>
 
         <DivForm>
-          <label>Telefone:</label>
-          <input {...register("userTel")} placeholder="(99) 99999-9999" />
+          <label>Telefone: </label>
+          <MaskedInput 
+            mask={['(', /[1-9]/, /\d/, ')', ' ', /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]} 
+            {...register("userTel")}
+            onChange={(e) =>
+              setValue("userTel", e.target.value, { shouldValidate: true })
+            }
+            placeholder="(99) 99999-9999"
+          />
         </DivForm>
 
         <DivForm>
@@ -136,7 +153,7 @@ const Forms = (props: any): JSX.Element => {
           <select
             {...register("periodoContato")}
             onChange={(e) =>
-              setValue("interBairro", e.target.value, { shouldValidate: true })
+              setValue("periodoContato", e.target.value, { shouldValidate: true })
             }
           >
             {periodosPContato.map((item, index) => (
@@ -157,53 +174,63 @@ const Forms = (props: any): JSX.Element => {
 
         {/* Erros */}
         {errors.fullName?.message && (
-          <MsgError>
+          <MsgForms>
             <AiOutlineWarning
               size={20}
               style={{ marginRight: "0.9rem", color: "#e90a0a" }}
             />
             {errors.fullName?.message}
-          </MsgError>
+          </MsgForms>
         )}
 
         {errors.userEmail?.message && (
-          <MsgError>
+          <MsgForms>
             <AiOutlineWarning
               size={20}
               style={{ marginRight: "0.9rem", color: "#e90a0a" }}
             />
             {errors.userEmail?.message}
-          </MsgError>
+          </MsgForms>
         )}
 
         {errors.userTel?.message && (
-          <MsgError>
+          <MsgForms>
             <AiOutlineWarning
               size={20}
               style={{ marginRight: "0.9rem", color: "#e90a0a" }}
             />
             {errors.userTel?.message}
-          </MsgError>
+          </MsgForms>
         )}
 
         {errors.interBairro?.message && (
-          <MsgError>
+          <MsgForms>
             <AiOutlineWarning
               size={20}
               style={{ marginRight: "0.9rem", color: "#e90a0a" }}
             />
             {errors.interBairro?.message}
-          </MsgError>
+          </MsgForms>
         )}
 
         {errors.periodoContato?.message && (
-          <MsgError>
+          <MsgForms>
             <AiOutlineWarning
               size={20}
               style={{ marginRight: "0.9rem", color: "#e90a0a" }}
             />
             {errors.periodoContato?.message}
-          </MsgError>
+          </MsgForms>
+        )}
+
+        {isSubmitSuccessful && (
+          <MsgForms>
+            <BsFillCheckCircleFill 
+            size={20}
+            style={{ marginRight: "0.9rem", color: "#00ca00" }}
+          />
+            Enviado!
+          </MsgForms>
         )}
 
         <DivForm>
