@@ -22,7 +22,7 @@ import MaskedInput from 'react-text-mask';
 interface FormInputs {
   fullName: string;
   userEmail: string;
-  userTel: number;
+  userTel: string;
   interBairro: string;
   periodoContato: string;
   userAutorization: boolean;
@@ -47,7 +47,7 @@ const schema = yup
         "E-mail inválido"
       ),
     userTel: yup
-    .string()
+      .string()
       .required("O campo Telefone é obrigatório.")
       .phone("BR", true, "Número de telefone inválido."),
     interBairro: yup
