@@ -13,4 +13,4 @@ Este projeto é um formulário, onde valida as entradas do usuário e retorna se
  - React-Text-Mask
 
 # Deploy
-https://github.com/alvesxdani/tela-forms
+https://alvesxdani.github.io/tela-forms/
